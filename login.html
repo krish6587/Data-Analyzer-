@@ -1,0 +1,1099 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Data Analyzer — Secure Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+  :root{
+    --primary:#4f46e5;
+    --primary-dark:#4338ca;
+    --primary-light:#6366f1;
+    --accent:#06b6d4;
+    --success:#10b981;
+    --muted:#6b7280;
+    --muted-dark:#4b5563;
+    --bg:#f9fafb;
+    --card:#ffffff;
+    --border:#e5e7eb;
+    --text-primary:#0f172a;
+    --text-secondary:#475569;
+    --focus: 3px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;background:var(--bg);color:var(--text-primary);-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  
+  .page{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px 20px
+  }
+  
+  .container{
+    width:1200px;
+    max-width:100%;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:48px;
+    align-items:stretch
+  }
+
+  /* LEFT PANEL - Form */
+  .form-panel{
+    background:var(--card);
+    padding:48px 56px;
+    border-radius:20px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.08);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+  
+  .brand-section{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:48px
+  }
+  .brand-icon{
+    width:40px;
+    height:40px;
+    background:linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px
+  }
+  .brand-name{
+    font-size:22px;
+    font-weight:700;
+    color:var(--text-primary)
+  }
+
+  .form-section{
+    display:flex;
+    flex-direction:column;
+    width:100%;
+    max-width:400px;
+    margin:0 auto;
+  }
+
+  .form-header{
+    margin-bottom:32px
+  }
+  h1{
+    font-size:32px;
+    line-height:1.2;
+    color:var(--text-primary);
+    margin:0 0 12px;
+    font-weight:700
+  }
+  p.subtitle{
+    color:var(--muted);
+    font-size:15px;
+    margin:0;
+    line-height:1.6
+  }
+
+  .form{
+    margin-bottom:24px
+  }
+  
+  label{
+    display:block;
+    font-size:14px;
+    font-weight:600;
+    color:var(--text-primary);
+    margin-bottom:8px
+  }
+  
+  input[type="email"],
+  input[type="password"],
+  input[type="text"]{
+    width:100%;
+    padding:12px 44px 12px 14px;
+    border:1.5px solid var(--border);
+    border-radius:8px;
+    font-size:15px;
+    background:#fff;
+    outline:none;
+    transition:all 0.2s ease
+  }
+  input:focus{
+    border-color:var(--primary);
+    box-shadow:0 0 0 3px rgba(79,70,229,0.1)
+  }
+  input::placeholder{color:#9ca3af}
+  
+  .form-row{
+    margin-bottom:20px
+  }
+  
+  .password-wrapper{
+    position:relative
+  }
+  .pw-toggle{
+    position:absolute;
+    right:12px;
+    top:50%;
+    transform:translateY(-50%);
+    background:transparent;
+    border:none;
+    padding:4px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--muted);
+    transition:color 0.2s;
+  }
+  .pw-toggle:hover{
+    color:var(--primary);
+  }
+  
+  .form-options{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:16px 0 24px;
+    font-size:14px
+  }
+  .checkbox{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:var(--text-secondary)
+  }
+  .checkbox input{
+    width:16px;
+    height:16px;
+    cursor:pointer
+  }
+  .forgot-link{
+    color:var(--primary);
+    font-weight:600;
+    cursor:pointer
+  }
+  .forgot-link:hover{
+    color:var(--primary-dark)
+  }
+
+  .btn-primary{
+    width:100%;
+    background:linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color:#fff;
+    padding:14px 24px;
+    border-radius:8px;
+    border:none;
+    font-weight:600;
+    font-size:15px;
+    cursor:pointer;
+    transition:all 0.2s ease;
+    box-shadow:0 2px 8px rgba(79,70,229,0.2)
+  }
+  .btn-primary:hover{
+    transform:translateY(-1px);
+    box-shadow:0 4px 12px rgba(79,70,229,0.3)
+  }
+  .btn-primary:active{
+    transform:translateY(0)
+  }
+
+  .divider{
+    display:flex;
+    align-items:center;
+    margin:28px 0;
+    color:var(--muted);
+    font-size:13px
+  }
+  .divider::before,
+  .divider::after{
+    content:'';
+    flex:1;
+    height:1px;
+    background:var(--border)
+  }
+  .divider span{
+    padding:0 16px
+  }
+
+  .signup-section{
+    text-align:center;
+    margin-top:auto;
+    padding-top:24px;
+    color:var(--text-secondary);
+    font-size:14px
+  }
+  .signup-link{
+    color:var(--primary);
+    font-weight:600;
+    margin-left:6px
+  }
+  .signup-link:hover{
+    color:var(--primary-dark)
+  }
+
+  /* RIGHT PANEL - Hero Section */
+  .hero-panel{
+    background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius:20px;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:48px;
+    overflow:hidden;
+    color:white;
+    min-height:600px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.15)
+  }
+  
+  .hero-content{
+    max-width:580px;
+    color:white;
+    z-index:2;
+    text-align:center
+  }
+  
+  .hero-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(10px);
+    padding:8px 16px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:24px;
+    border:1px solid rgba(255,255,255,0.2)
+  }
+  
+  .hero-title{
+    font-size:42px;
+    line-height:1.2;
+    font-weight:800;
+    margin:0 0 20px;
+    text-shadow:0 2px 20px rgba(0,0,0,0.1)
+  }
+  
+  .hero-description{
+    font-size:18px;
+    line-height:1.6;
+    margin:0 0 36px;
+    opacity:0.95
+  }
+  
+  .features-grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:16px;
+    margin-top:40px
+  }
+  
+  .feature-card{
+    background:rgba(255,255,255,0.12);
+    backdrop-filter:blur(10px);
+    padding:20px;
+    border-radius:12px;
+    text-align:left;
+    border:1px solid rgba(255,255,255,0.15);
+    transition:all 0.3s ease
+  }
+  .feature-card:hover{
+    background:rgba(255,255,255,0.18);
+    transform:translateY(-2px)
+  }
+  
+  .feature-icon{
+    font-size:28px;
+    margin-bottom:12px;
+    display:block
+  }
+  
+  .feature-title{
+    font-size:16px;
+    font-weight:700;
+    margin:0 0 6px
+  }
+  
+  .feature-text{
+    font-size:13px;
+    margin:0;
+    opacity:0.9;
+    line-height:1.5
+  }
+
+  /* Background decoration */
+  .bg-decoration{
+    position:absolute;
+    width:600px;
+    height:600px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.05);
+    top:-200px;
+    right:-200px;
+    z-index:1
+  }
+  .bg-decoration-2{
+    position:absolute;
+    width:400px;
+    height:400px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.03);
+    bottom:-100px;
+    left:-100px;
+    z-index:1
+  }
+
+  /* Responsive */
+  @media (max-width:1100px){
+    .container{
+      grid-template-columns:1fr;
+      gap:32px
+    }
+    .hero-panel{
+      order:-1;
+      min-height:400px;
+      padding:40px
+    }
+    .form-panel{
+      padding:40px 32px
+    }
+    .hero-title{font-size:32px}
+    .features-grid{grid-template-columns:1fr}
+  }
+  
+  @media (max-width:640px){
+    .page{
+      padding:20px 16px
+    }
+    .form-panel{
+      padding:28px 24px
+    }
+    h1{font-size:26px}
+    .hero-title{font-size:28px}
+    .brand-name{font-size:18px}
+  }
+
+  .sr-only{
+    position:absolute;
+    width:1px;
+    height:1px;
+    padding:0;
+    margin:-1px;
+    overflow:hidden;
+    clip:rect(0,0,0,0);
+    white-space:nowrap;
+    border:0
+  }
+
+  /* Toast */
+  .toast{
+    position:fixed;
+    top:20px;
+    right:20px;
+    padding:16px 24px;
+    color:white;
+    border-radius:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+    font-weight:600;
+    z-index:2000;
+    animation:toastIn 0.3s ease
+  }
+  .toast.success{background:linear-gradient(135deg,#10b981,#059669)}
+  .toast.error{background:linear-gradient(135deg,#ef4444,#dc2626)}
+  @keyframes toastIn{
+    from{transform:translateX(400px);opacity:0}
+    to{transform:translateX(0);opacity:1}
+  }
+
+  /* Forgot Password Modal */
+  .modal-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.5);
+    backdrop-filter:blur(4px);
+    z-index:1000;
+    align-items:center;
+    justify-content:center;
+    padding:20px
+  }
+  .modal-overlay.show{
+    display:flex
+  }
+  .modal{
+    background:var(--card);
+    border-radius:20px;
+    padding:40px;
+    width:480px;
+    max-width:100%;
+    box-shadow:0 20px 60px rgba(0,0,0,0.2);
+    animation:modalIn 0.3s ease;
+    position:relative
+  }
+  @keyframes modalIn{
+    from{transform:scale(0.95) translateY(20px);opacity:0}
+    to{transform:scale(1) translateY(0);opacity:1}
+  }
+  .modal-close{
+    position:absolute;
+    top:16px;
+    right:16px;
+    background:none;
+    border:none;
+    font-size:24px;
+    cursor:pointer;
+    color:var(--muted);
+    padding:4px 8px;
+    border-radius:6px;
+    transition:all 0.2s
+  }
+  .modal-close:hover{
+    background:#f3f4f6;
+    color:var(--text-primary)
+  }
+  .modal h2{
+    font-size:24px;
+    margin:0 0 8px;
+    font-weight:700;
+    color:var(--text-primary)
+  }
+  .modal .modal-subtitle{
+    color:var(--muted);
+    font-size:14px;
+    margin:0 0 24px;
+    line-height:1.5
+  }
+  .modal .form-row{
+    margin-bottom:16px
+  }
+  .modal .error-text{
+    color:#ef4444;
+    font-size:13px;
+    margin-top:6px;
+    display:none
+  }
+  .modal .btn-primary{
+    margin-top:8px
+  }
+  .modal .otp-row{
+    display:flex;
+    gap:10px;
+    align-items:center
+  }
+  .modal .otp-input{
+    flex:1;
+    padding:12px 14px;
+    border:1.5px solid var(--border);
+    border-radius:8px;
+    font-size:20px;
+    font-weight:700;
+    letter-spacing:8px;
+    text-align:center;
+    font-family:inherit;
+    background:var(--card);
+    transition:all 0.2s
+  }
+  .modal .otp-input:focus{
+    outline:none;
+    border-color:var(--primary);
+    box-shadow:0 0 0 3px rgba(79,70,229,0.1)
+  }
+  .modal .btn-outline{
+    padding:12px 16px;
+    border-radius:8px;
+    border:1.5px solid var(--primary);
+    background:transparent;
+    color:var(--primary);
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+    transition:all 0.2s;
+    white-space:nowrap;
+    font-family:inherit
+  }
+  .modal .btn-outline:hover{
+    background:var(--primary);
+    color:#fff
+  }
+  .modal .btn-outline:disabled{
+    opacity:0.5;
+    cursor:not-allowed
+  }
+  .step{display:none}
+  .step.active{display:block}
+
+  /* Password Strength (modal) */
+  .modal .strength-meter{
+    height:6px;
+    border-radius:10px;
+    background:#e5e7eb;
+    overflow:hidden;
+    margin:12px 0
+  }
+  .modal .strength-bar{
+    height:100%;
+    width:0%;
+    transition:all 0.3s ease;
+    background:var(--muted)
+  }
+  .modal .strength-requirements{
+    margin:0;
+    padding:0;
+    list-style:none
+  }
+  .modal .strength-requirements li{
+    font-size:13px;
+    color:var(--muted);
+    margin:6px 0;
+    padding-left:20px;
+    position:relative
+  }
+  .modal .strength-requirements li::before{
+    content:'○';
+    position:absolute;
+    left:0;
+    font-size:12px
+  }
+  .modal .strength-requirements li.met{
+    color:var(--success);
+    font-weight:600
+  }
+  .modal .strength-requirements li.met::before{
+    content:'✓'
+  }
+  .modal .verified-text{
+    color:var(--success);
+    font-weight:600;
+    font-size:14px;
+    margin-top:8px;
+    display:flex;
+    align-items:center;
+    gap:6px
+  }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="container">
+      <!-- LEFT PANEL: Login Form -->
+      <section class="form-panel" aria-labelledby="login-title">
+      <!-- Brand -->
+      <div class="brand-section">
+        <div class="brand-icon">📊</div>
+        <div class="brand-name">Data Analyzer</div>
+      </div>
+
+      <!-- Form Section -->
+      <div class="form-section">
+        <div class="form-header">
+          <h1 id="login-title">Welcome Back</h1>
+          <p class="subtitle">Sign in to access your data analysis dashboard and continue your work.</p>
+        </div>
+
+        <form class="form" id="loginForm" novalidate>
+          <div class="form-row">
+            <label for="email">Email Address</label>
+            <input 
+              id="email" 
+              name="email" 
+              type="email" 
+              inputmode="email" 
+              placeholder="your.email@company.com" 
+              autocomplete="email" 
+              required 
+              aria-required="true"
+            >
+          </div>
+
+          <div class="form-row">
+            <label for="password">Password</label>
+            <div class="password-wrapper">
+              <input 
+                id="password" 
+                name="password" 
+                type="password" 
+                placeholder="Enter your password" 
+                autocomplete="current-password" 
+                required 
+                aria-required="true" 
+                minlength="6"
+              >
+              <button type="button" class="pw-toggle" id="pwToggle" aria-label="Toggle password visibility">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-options">
+            <label class="checkbox" for="remember">
+              <input id="remember" name="remember" type="checkbox">
+              <span>Remember me</span>
+            </label>
+            <a href="#" class="forgot-link" id="forgot">Forgot password?</a>
+          </div>
+
+          <button class="btn-primary" id="loginBtn" type="submit">
+            Sign In
+          </button>
+        </form>
+
+        <div class="divider">
+          <span>New to Data Analyzer?</span>
+        </div>
+
+        <div class="signup-section">
+          Don't have an account?
+          <a href="registration.html" class="signup-link">Create Account</a>
+        </div>
+      </section>
+
+      <!-- RIGHT PANEL: Hero Content -->
+      <aside class="hero-panel" aria-labelledby="hero-heading">
+      <div class="bg-decoration"></div>
+      <div class="bg-decoration-2"></div>
+      
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span>🚀</span>
+          <span>Powerful Analytics Platform</span>
+        </div>
+        
+        <h2 id="hero-heading" class="hero-title">
+          Transform Your Data Into Insights
+        </h2>
+        
+        <p class="hero-description">
+          Upload, analyze, and visualize your data with our powerful analytics platform. Make data-driven decisions faster than ever.
+        </p>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <span class="feature-icon">📁</span>
+            <h3 class="feature-title">File Upload</h3>
+            <p class="feature-text">Support for CSV and Excel files with instant processing</p>
+          </div>
+          
+          <div class="feature-card">
+            <span class="feature-icon">📊</span>
+            <h3 class="feature-title">Visual Charts</h3>
+            <p class="feature-text">Create beautiful charts and graphs from your data</p>
+          </div>
+          
+          <div class="feature-card">
+            <span class="feature-icon">📈</span>
+            <h3 class="feature-title">Smart Analysis</h3>
+            <p class="feature-text">Get statistical insights and data summaries automatically</p>
+          </div>
+          
+          <div class="feature-card">
+            <span class="feature-icon">⚡</span>
+            <h3 class="feature-title">Real-time Processing</h3>
+            <p class="feature-text">Analyze large datasets with lightning-fast performance</p>
+          </div>
+        </div>
+      </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Forgot Password Modal -->
+  <div class="modal-overlay" id="forgotModal">
+    <div class="modal">
+      <button class="modal-close" id="modalClose">&times;</button>
+
+      <!-- STEP 1: Enter Email -->
+      <div class="step active" id="fpStep1">
+        <h2>🔐 Forgot Password</h2>
+        <p class="modal-subtitle">Enter your registered email. We'll send a verification code to reset your password.</p>
+        <div class="form-row">
+          <label for="fpEmail">Email Address</label>
+          <input id="fpEmail" type="email" placeholder="your.email@company.com" autocomplete="email">
+          <p class="error-text" id="fpEmailError"></p>
+        </div>
+        <button class="btn-primary" id="fpSendOtp">Send Verification Code</button>
+      </div>
+
+      <!-- STEP 2: Verify OTP -->
+      <div class="step" id="fpStep2">
+        <h2>📧 Check Your Email</h2>
+        <p class="modal-subtitle">Enter the 6-digit code sent to <strong id="fpEmailDisplay"></strong></p>
+        <div class="form-row">
+          <div class="otp-row">
+            <input type="text" id="fpOtpInput" class="otp-input" maxlength="6" placeholder="------" inputmode="numeric">
+            <button class="btn-outline" id="fpResendOtp">Resend</button>
+          </div>
+          <p class="error-text" id="fpOtpError"></p>
+        </div>
+        <button class="btn-primary" id="fpVerifyOtp">Verify Code</button>
+      </div>
+
+      <!-- STEP 3: Set New Password -->
+      <div class="step" id="fpStep3">
+        <h2>🔑 Set New Password</h2>
+        <p class="modal-subtitle">Create a strong new password for your account.</p>
+        <p class="verified-text">✅ Email verified</p>
+        <div class="form-row">
+          <label for="fpNewPw">New Password</label>
+          <div class="password-wrapper">
+            <input id="fpNewPw" type="password" placeholder="Create a strong password" autocomplete="new-password">
+            <button type="button" class="pw-toggle" id="fpPwToggle" aria-label="Toggle password">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </button>
+          </div>
+          <div class="strength-meter"><div class="strength-bar" id="fpStrengthBar"></div></div>
+          <ul class="strength-requirements">
+            <li id="fpReqLen">At least 8 characters</li>
+            <li id="fpReqNum">Contains number or symbol</li>
+            <li id="fpReqCase">Has uppercase & lowercase letters</li>
+          </ul>
+        </div>
+        <div class="form-row">
+          <label for="fpConfirmPw">Confirm Password</label>
+          <div class="password-wrapper">
+            <input id="fpConfirmPw" type="password" placeholder="Re-enter your password" autocomplete="new-password">
+          </div>
+          <p class="error-text" id="fpPwError"></p>
+        </div>
+        <button class="btn-primary" id="fpResetBtn">Reset Password</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    const form = document.getElementById('loginForm');
+    const email = document.getElementById('email');
+    const pw = document.getElementById('password');
+    const loginBtn = document.getElementById('loginBtn');
+    const pwToggle = document.getElementById('pwToggle');
+
+    const eyeOpen = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+    const eyeClosed = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`;
+
+    // Password visibility toggle
+    pwToggle.addEventListener('click', () => {
+      const isPassword = pw.type === 'password';
+      pw.type = isPassword ? 'text' : 'password';
+      pwToggle.innerHTML = isPassword ? eyeClosed : eyeOpen;
+      pw.focus();
+    });
+
+    // Form validation
+    function validate() {
+      const errors = [];
+      const emailValue = email.value.trim();
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!emailValue) {
+        errors.push('Email address is required');
+      } else if (!emailRegex.test(emailValue)) {
+        errors.push('Please enter a valid email address');
+      }
+
+      if (!pw.value) {
+        errors.push('Password is required');
+      }
+
+      return errors;
+    }
+
+    // Form submission
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errors = validate();
+
+      if (errors.length > 0) {
+        alert('Please fix the following errors:\n\n' + errors.join('\n'));
+        return;
+      }
+
+      // Show loading state
+      loginBtn.disabled = true;
+      loginBtn.textContent = 'Signing in...';
+
+      try {
+        // ---------------------------------------------------------
+        // NEW BACKEND CONNECTION LOGIC
+        // Sending the email as 'username' to match the Python server
+        // ---------------------------------------------------------
+        const response = await fetch('http://127.0.0.1:5000/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                username: email.value.trim().toLowerCase(), 
+                password: pw.value 
+            })
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.status === 'success') {
+            // Save login state in localStorage so other pages know the user is logged in
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('username', email.value.trim().toLowerCase());
+            
+            // Redirect to home page
+            window.location.href = 'home.html';
+        } else {
+            // Display error from the backend (e.g., "Invalid username or password")
+            alert(result.error || 'Login failed');
+            
+            // Reset button so they can try again
+            loginBtn.disabled = false;
+            loginBtn.textContent = 'Sign In'; // Assuming original text was 'Sign In'
+        }
+      } catch (error) {
+        console.error('Error during login:', error);
+        alert('Could not connect to the server. Is Python running?');
+        
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Sign In';
+      }
+    });
+
+    // ═══════════════════════ FORGOT PASSWORD ═══════════════════════
+    const forgotModal = document.getElementById('forgotModal');
+    const modalClose = document.getElementById('modalClose');
+    const fpStep1 = document.getElementById('fpStep1');
+    const fpStep2 = document.getElementById('fpStep2');
+    const fpStep3 = document.getElementById('fpStep3');
+    const fpEmail = document.getElementById('fpEmail');
+    const fpEmailDisplay = document.getElementById('fpEmailDisplay');
+    const fpSendOtp = document.getElementById('fpSendOtp');
+    const fpOtpInput = document.getElementById('fpOtpInput');
+    const fpResendOtp = document.getElementById('fpResendOtp');
+    const fpVerifyOtp = document.getElementById('fpVerifyOtp');
+    const fpNewPw = document.getElementById('fpNewPw');
+    const fpConfirmPw = document.getElementById('fpConfirmPw');
+    const fpResetBtn = document.getElementById('fpResetBtn');
+    const fpStrengthBar = document.getElementById('fpStrengthBar');
+    const fpPwToggle = document.getElementById('fpPwToggle');
+
+    const fpEyeOpen = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+    const fpEyeClosed = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`;
+
+    function showToast(msg, type='success') {
+      const t = document.createElement('div');
+      t.className = `toast ${type}`;
+      t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 3000);
+    }
+
+    function goToStep(step) {
+      fpStep1.classList.remove('active');
+      fpStep2.classList.remove('active');
+      fpStep3.classList.remove('active');
+      step.classList.add('active');
+    }
+
+    // Open modal
+    document.getElementById('forgot').addEventListener('click', (e) => {
+      e.preventDefault();
+      forgotModal.classList.add('show');
+      goToStep(fpStep1);
+      fpEmail.value = email.value || '';
+      fpEmail.focus();
+    });
+
+    // Close modal
+    modalClose.addEventListener('click', () => {
+      forgotModal.classList.remove('show');
+    });
+    forgotModal.addEventListener('click', (e) => {
+      if (e.target === forgotModal) forgotModal.classList.remove('show');
+    });
+
+    // STEP 1: Send OTP
+    fpSendOtp.addEventListener('click', async () => {
+      const fpEmailVal = fpEmail.value.trim().toLowerCase();
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!fpEmailVal || !emailRegex.test(fpEmailVal)) {
+        const err = document.getElementById('fpEmailError');
+        err.textContent = 'Please enter a valid email address';
+        err.style.display = 'block';
+        return;
+      }
+      document.getElementById('fpEmailError').style.display = 'none';
+      fpSendOtp.disabled = true;
+      fpSendOtp.textContent = 'Sending...';
+
+      try {
+        const res = await fetch('http://127.0.0.1:5000/send-otp', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ email: fpEmailVal })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          fpEmailDisplay.textContent = fpEmailVal;
+          goToStep(fpStep2);
+          showToast('OTP sent to ' + fpEmailVal);
+          // Resend countdown
+          let secs = 30;
+          fpResendOtp.disabled = true;
+          const cd = setInterval(() => {
+            fpResendOtp.textContent = `Resend (${secs}s)`;
+            secs--;
+            if (secs < 0) { clearInterval(cd); fpResendOtp.disabled = false; fpResendOtp.textContent = 'Resend'; }
+          }, 1000);
+        } else {
+          const err = document.getElementById('fpEmailError');
+          err.textContent = data.error || 'Failed to send OTP';
+          err.style.display = 'block';
+        }
+      } catch(e) {
+        const err = document.getElementById('fpEmailError');
+        err.textContent = 'Server not reachable.';
+        err.style.display = 'block';
+      }
+      fpSendOtp.disabled = false;
+      fpSendOtp.textContent = 'Send Verification Code';
+    });
+
+    // Resend OTP
+    fpResendOtp.addEventListener('click', () => {
+      fpSendOtp.click();
+    });
+
+    // STEP 2: Verify OTP
+    fpVerifyOtp.addEventListener('click', async () => {
+      const fpEmailVal = fpEmail.value.trim().toLowerCase();
+      const otp = fpOtpInput.value.trim();
+      if (otp.length !== 6) {
+        const err = document.getElementById('fpOtpError');
+        err.textContent = 'Please enter the 6-digit code';
+        err.style.display = 'block';
+        return;
+      }
+      document.getElementById('fpOtpError').style.display = 'none';
+      fpVerifyOtp.disabled = true;
+      fpVerifyOtp.textContent = 'Verifying...';
+
+      try {
+        const res = await fetch('http://127.0.0.1:5000/verify-otp', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ email: fpEmailVal, otp })
+        });
+        const data = await res.json();
+        if (res.ok && data.verified) {
+          goToStep(fpStep3);
+          showToast('Email verified! Set your new password.');
+        } else {
+          const err = document.getElementById('fpOtpError');
+          err.textContent = data.error || 'Invalid OTP';
+          err.style.display = 'block';
+        }
+      } catch(e) {
+        const err = document.getElementById('fpOtpError');
+        err.textContent = 'Server not reachable.';
+        err.style.display = 'block';
+      }
+      fpVerifyOtp.disabled = false;
+      fpVerifyOtp.textContent = 'Verify Code';
+    });
+
+    // Password toggle in modal
+    fpPwToggle.addEventListener('click', () => {
+      const isPw = fpNewPw.type === 'password';
+      fpNewPw.type = isPw ? 'text' : 'password';
+      fpPwToggle.innerHTML = isPw ? fpEyeClosed : fpEyeOpen;
+    });
+
+    // Password strength in modal
+    fpNewPw.addEventListener('input', () => {
+      const p = fpNewPw.value;
+      const hasLen = p.length >= 8;
+      const hasNum = /[0-9\W]/.test(p);
+      const hasCase = /[a-z]/.test(p) && /[A-Z]/.test(p);
+
+      document.getElementById('fpReqLen').classList.toggle('met', hasLen);
+      document.getElementById('fpReqNum').classList.toggle('met', hasNum);
+      document.getElementById('fpReqCase').classList.toggle('met', hasCase);
+
+      let str = 0;
+      if (hasLen) str += 25;
+      if (hasNum) str += 25;
+      if (hasCase) str += 25;
+      if (p.length >= 12) str += 25;
+
+      fpStrengthBar.style.width = str + '%';
+      if (str <= 25) fpStrengthBar.style.background = 'linear-gradient(90deg,#ef4444,#f97316)';
+      else if (str <= 50) fpStrengthBar.style.background = 'linear-gradient(90deg,#f97316,#f59e0b)';
+      else if (str <= 75) fpStrengthBar.style.background = 'linear-gradient(90deg,#f59e0b,#10b981)';
+      else fpStrengthBar.style.background = 'linear-gradient(90deg,#10b981,#06b6d4)';
+    });
+
+    // STEP 3: Reset Password
+    fpResetBtn.addEventListener('click', async () => {
+      const fpEmailVal = fpEmail.value.trim().toLowerCase();
+      const newPw = fpNewPw.value;
+      const confirmPw = fpConfirmPw.value;
+      const errEl = document.getElementById('fpPwError');
+
+      // Validate password
+      if (newPw.length < 8) {
+        errEl.textContent = 'Password must be at least 8 characters';
+        errEl.style.display = 'block'; return;
+      }
+      if (!/[0-9\W]/.test(newPw)) {
+        errEl.textContent = 'Password must contain a number or symbol';
+        errEl.style.display = 'block'; return;
+      }
+      if (!/[a-z]/.test(newPw) || !/[A-Z]/.test(newPw)) {
+        errEl.textContent = 'Password must have uppercase & lowercase letters';
+        errEl.style.display = 'block'; return;
+      }
+      if (newPw !== confirmPw) {
+        errEl.textContent = 'Passwords do not match';
+        errEl.style.display = 'block'; return;
+      }
+      errEl.style.display = 'none';
+      fpResetBtn.disabled = true;
+      fpResetBtn.textContent = 'Resetting...';
+
+      try {
+        const res = await fetch('http://127.0.0.1:5000/reset-password', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ email: fpEmailVal, new_password: newPw })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showToast('Password reset successfully! Please login.');
+          forgotModal.classList.remove('show');
+        } else {
+          errEl.textContent = data.error || 'Reset failed';
+          errEl.style.display = 'block';
+        }
+      } catch(e) {
+        errEl.textContent = 'Server not reachable.';
+        errEl.style.display = 'block';
+      }
+      fpResetBtn.disabled = false;
+      fpResetBtn.textContent = 'Reset Password';
+    });
+
+    // ═══════════════════════════════════════════════════════════════
+
+    // Enter key submission
+    pw.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        // Prevent default to stop double-firing if inside a form
+        e.preventDefault(); 
+        form.dispatchEvent(new Event('submit', { cancelable: true }));
+      }
+    });
+  })();
+</script>
+</body>
+</html>

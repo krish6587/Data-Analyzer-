@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Analyzer — Smart Data Insights</title>
+    <meta name="description" content="Upload, analyze, and visualize your data with powerful charts and statistics. A premium data analysis dashboard.">
+
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <!-- App Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar glass-panel">
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-chart-pie"></i> Data Analyzer
+            </div>
+            
+            <ul class="nav-links">
+                <li>
+                    <a href="#hero-section" class="nav-link active">
+                        <i class="fa-solid fa-house"></i> Home
+                    </a>
+                </li>
+                <li>
+                    <a href="#upload-section" class="nav-link">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Data Upload
+                    </a>
+                </li>
+                <li>
+                    <a href="#manual-section" class="nav-link">
+                        <i class="fa-solid fa-keyboard"></i> Manual Entry
+                    </a>
+                </li>
+                <li>
+                    <a href="#table-section" class="nav-link">
+                        <i class="fa-solid fa-table"></i> Data Table
+                    </a>
+                </li>
+                <li>
+                    <a href="#statsSection" class="nav-link">
+                        <i class="fa-solid fa-chart-simple"></i> Analytics
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="sidebar-footer">
+                <a href="#" class="nav-link" id="sidebarAuthBtn" onclick="handleSidebarAuth()">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> <span id="sidebarAuthText">Login</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="main-wrapper">
+            
+            <!-- Top Header -->
+            <header class="top-header glass-header">
+                <div class="page-title">Workspace Dashboard</div>
+                <div class="user-profile">
+                    <button class="btn btn-icon btn-secondary" id="themeToggleBtn" onclick="toggleTheme()" title="Toggle Light/Dark Mode" style="margin-right: 15px;">
+                        <i class="fa-solid fa-sun" id="themeIcon"></i>
+                    </button>
+                    <div class="profile-dropdown-container" id="profileSection">
+                        <div class="avatar" id="profileAvatar" onclick="toggleProfileDropdown()">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <div class="profile-dropdown glass-panel" id="profileDropdown">
+                            <div class="profile-header">
+                                <div class="profile-avatar-large">
+                                    <i class="fa-solid fa-user"></i>
+                                </div>
+                                <div class="profile-info">
+                                    <h4 id="displayUserName">User Name</h4>
+                                    <p id="displayUserEmail">user@example.com</p>
+                                </div>
+                            </div>
+                            <div class="profile-body">
+                                <a href="#" class="profile-link" onclick="localStorage.removeItem('isLoggedIn'); window.location.reload();">
+                                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Login button shown when not logged in -->
+                    <a href="login.html" class="btn btn-primary" id="headerLoginBtn" style="display: none;">
+                        <i class="fa-solid fa-right-to-bracket"></i> Login
+                    </a>
+                </div>
+            </header>
+
+            <!-- Content Container -->
+            <main class="main-content">
+
+                <!-- ============ HERO SECTION ============ -->
+                <section class="hero-section" id="hero-section">
+                    <div class="hero-bg-effects">
+                        <div class="hero-orb hero-orb-1"></div>
+                        <div class="hero-orb hero-orb-2"></div>
+                        <div class="hero-orb hero-orb-3"></div>
+                    </div>
+
+                    <!-- Floating Icons -->
+                    <div class="hero-floating-icons">
+                        <i class="fa-solid fa-chart-bar hero-float-icon icon-1"></i>
+                        <i class="fa-solid fa-chart-pie hero-float-icon icon-2"></i>
+                        <i class="fa-solid fa-database hero-float-icon icon-3"></i>
+                        <i class="fa-solid fa-chart-line hero-float-icon icon-4"></i>
+                        <i class="fa-solid fa-table-cells hero-float-icon icon-5"></i>
+                        <i class="fa-solid fa-magnifying-glass-chart hero-float-icon icon-6"></i>
+                    </div>
+
+                    <div class="hero-content">
+                        <div class="hero-badge">
+                            <i class="fa-solid fa-sparkles"></i> Smart Data Analysis Platform
+                        </div>
+                        <h1 class="hero-title">
+                            Analyze Your Data<br>
+                            <span class="hero-gradient-text">Like a Pro</span>
+                        </h1>
+                        <p class="hero-subtitle">
+                            Upload datasets, explore with interactive tables, generate powerful visualizations, and uncover insights — all in one beautiful dashboard.
+                        </p>
+                        <div class="hero-cta-group">
+                            <a href="#upload-section" class="btn btn-primary btn-lg hero-cta-primary" id="heroGetStartedBtn" style="display: none;">
+                                <i class="fa-solid fa-rocket"></i> Get Started
+                            </a>
+                            <a href="login.html" class="btn btn-primary btn-lg hero-cta-primary" id="heroLoginBtn">
+                                <i class="fa-solid fa-right-to-bracket"></i> Login to Get Started
+                            </a>
+                            <a href="registration.html" class="btn btn-secondary btn-lg" id="heroRegisterBtn">
+                                <i class="fa-solid fa-user-plus"></i> Create Account
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Feature Highlight Cards -->
+                    <div class="hero-features">
+                        <div class="hero-feature-card">
+                            <div class="hero-feature-icon" style="background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(129,140,248,0.2));">
+                                <i class="fa-solid fa-cloud-arrow-up" style="color: #818cf8;"></i>
+                            </div>
+                            <h3>Upload</h3>
+                            <p>CSV & Excel files with drag & drop</p>
+                        </div>
+                        <div class="hero-feature-card">
+                            <div class="hero-feature-icon" style="background: linear-gradient(135deg, rgba(16,185,129,0.2), rgba(52,211,153,0.2));">
+                                <i class="fa-solid fa-wand-magic-sparkles" style="color: #34d399;"></i>
+                            </div>
+                            <h3>Analyze</h3>
+                            <p>Automatic statistics & summaries</p>
+                        </div>
+                        <div class="hero-feature-card">
+                            <div class="hero-feature-icon" style="background: linear-gradient(135deg, rgba(236,72,153,0.2), rgba(244,114,182,0.2));">
+                                <i class="fa-solid fa-chart-area" style="color: #f472b6;"></i>
+                            </div>
+                            <h3>Visualize</h3>
+                            <p>Interactive charts & graphs</p>
+                        </div>
+                        <div class="hero-feature-card">
+                            <div class="hero-feature-icon" style="background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(251,191,36,0.2));">
+                                <i class="fa-solid fa-download" style="color: #fbbf24;"></i>
+                            </div>
+                            <h3>Export</h3>
+                            <p>Download results in any format</p>
+                        </div>
+                    </div>
+                </section>
+                <!-- ============ END HERO SECTION ============ -->
+
+                <!-- File Upload Section -->
+                <section class="section glass-panel lockable-section" id="upload-section">
+                    <!-- Lock Overlay -->
+                    <div class="lock-overlay" id="lock-upload">
+                        <div class="lock-overlay-content">
+                            <div class="lock-icon-wrapper">
+                                <i class="fa-solid fa-lock"></i>
+                            </div>
+                            <h3>Login Required</h3>
+                            <p>Sign in to upload and analyze your datasets</p>
+                            <a href="login.html" class="btn btn-primary">
+                                <i class="fa-solid fa-right-to-bracket"></i> Login to Access
+                            </a>
+                        </div>
+                    </div>
+                    <div class="section-header">
+                        <h2 class="section-title"><i class="fa-solid fa-file-import"></i> Data Ingestion</h2>
+                    </div>
+                    
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                        </div>
+                        <h3>Drag & Drop your dataset here</h3>
+                        <p>Supported formats: CSV, Excel (.xlsx, .xls)</p>
+                        <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                            <i class="fa-regular fa-folder-open"></i> Browse Files
+                        </button>
+                        <input type="file" id="fileInput" class="file-input" accept=".csv,.xlsx,.xls">
+                    </div>
+                </section>
+
+                <!-- Manual Data Input Section -->
+                <section class="section glass-panel lockable-section" id="manual-section">
+                    <!-- Lock Overlay -->
+                    <div class="lock-overlay" id="lock-manual">
+                        <div class="lock-overlay-content">
+                            <div class="lock-icon-wrapper">
+                                <i class="fa-solid fa-lock"></i>
+                            </div>
+                            <h3>Login Required</h3>
+                            <p>Sign in to manually enter and manage data</p>
+                            <a href="login.html" class="btn btn-primary">
+                                <i class="fa-solid fa-right-to-bracket"></i> Login to Access
+                            </a>
+                        </div>
+                    </div>
+                    <div class="section-header">
+                        <h2 class="section-title"><i class="fa-solid fa-pen-to-square"></i> Manual Data Entry</h2>
+                    </div>
+                    
+                    <div id="columnInputsContainer" class="input-grid"></div>
+                    
+                    <div class="action-bar">
+                        <button class="btn btn-secondary" onclick="addColumnField()">
+                            <i class="fa-solid fa-plus"></i> Add Column
+                        </button>
+                        <button class="btn btn-success" onclick="addRow()">
+                            <i class="fa-solid fa-check"></i> Add Row
+                        </button>
+                        <button class="btn btn-warning" onclick="clearInputs()">
+                            <i class="fa-solid fa-eraser"></i> Clear
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Data Table Section -->
+                <section class="section glass-panel lockable-section" id="table-section">
+                    <!-- Lock Overlay -->
+                    <div class="lock-overlay" id="lock-table">
+                        <div class="lock-overlay-content">
+                            <div class="lock-icon-wrapper">
+                                <i class="fa-solid fa-lock"></i>
+                            </div>
+                            <h3>Login Required</h3>
+                            <p>Sign in to explore and filter your data</p>
+                            <a href="login.html" class="btn btn-primary">
+                                <i class="fa-solid fa-right-to-bracket"></i> Login to Access
+                            </a>
+                        </div>
+                    </div>
+                    <div class="section-header">
+                        <h2 class="section-title"><i class="fa-solid fa-table-list"></i> Data Explorer</h2>
+                        <div class="action-bar" style="margin-top: 0;">
+                            <button class="btn btn-danger" onclick="clearTable()">
+                                <i class="fa-solid fa-trash-can"></i> Clear Table
+                            </button>
+                            <button class="btn btn-secondary" onclick="exportData()">
+                                <i class="fa-solid fa-download"></i> Export
+                            </button>
+                            <button class="btn btn-primary" onclick="analyzeData()">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> Analyze Data
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="controls-bar">
+                        <div class="search-container">
+                            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                            <input type="text" class="search-input" id="searchBox" placeholder="Search datasets...">
+                        </div>
+
+                        <div class="filters">
+                            <div class="filter-group">
+                                <label><i class="fa-solid fa-filter"></i> Filter:</label>
+                                <select id="filterColumn" class="filter-select">
+                                    <option value="">All Columns</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label><i class="fa-solid fa-layer-group"></i> Group:</label>
+                                <select id="groupByColumn" class="filter-select">
+                                    <option value="">No Grouping</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-icon btn-secondary" onclick="resetFilters()" title="Reset Filters">
+                                <i class="fa-solid fa-rotate-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table id="dataTable">
+                            <thead id="tableHead">
+                                <tr></tr>
+                            </thead>
+                            <tbody id="tableBody">
+                            </tbody>
+                        </table>
+                        
+                        <div class="empty-state" id="emptyState">
+                            <i class="fa-solid fa-box-open empty-icon"></i>
+                            <h3>No data available</h3>
+                            <p style="color: var(--text-muted)">Upload a file or add data manually to start exploring</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Statistics Section -->
+                <section class="section glass-panel lockable-section" id="statsSection" style="display: none;">
+                    <!-- Lock Overlay -->
+                    <div class="lock-overlay" id="lock-stats">
+                        <div class="lock-overlay-content">
+                            <div class="lock-icon-wrapper">
+                                <i class="fa-solid fa-lock"></i>
+                            </div>
+                            <h3>Login Required</h3>
+                            <p>Sign in to view statistical insights</p>
+                            <a href="login.html" class="btn btn-primary">
+                                <i class="fa-solid fa-right-to-bracket"></i> Login to Access
+                            </a>
+                        </div>
+                    </div>
+                    <div class="section-header">
+                        <h2 class="section-title"><i class="fa-solid fa-bolt"></i> Statistical Overview</h2>
+                        <button class="btn btn-secondary" onclick="refreshStats()">
+                            <i class="fa-solid fa-arrows-rotate"></i> Refresh Stats
+                        </button>
+                    </div>
+
+                    <!-- Column Selector -->
+                    <div class="stats-column-selector" id="statsColumnSelector">
+                        <div class="selector-label">
+                            <i class="fa-solid fa-filter"></i>
+                            <span>Select columns to analyze:</span>
+                        </div>
+                        <div class="selector-chips" id="statsColumnChips">
+                            <!-- Chips are populated dynamically by JS -->
+                        </div>
+                    </div>
+
+                    <div class="stats-grid" id="statsGrid"></div>
+                </section>
+
+                <!-- Chart Section -->
+                <section class="section glass-panel lockable-section" id="chartSection" style="display: none;">
+                    <!-- Lock Overlay -->
+                    <div class="lock-overlay" id="lock-chart">
+                        <div class="lock-overlay-content">
+                            <div class="lock-icon-wrapper">
+                                <i class="fa-solid fa-lock"></i>
+                            </div>
+                            <h3>Login Required</h3>
+                            <p>Sign in to create visualizations</p>
+                            <a href="login.html" class="btn btn-primary">
+                                <i class="fa-solid fa-right-to-bracket"></i> Login to Access
+                            </a>
+                        </div>
+                    </div>
+                    <div class="section-header">
+                        <h2 class="section-title"><i class="fa-solid fa-chart-area"></i> Visualizations</h2>
+                    </div>
+                    
+                    <div class="chart-controls">
+                        <div class="filter-group">
+                            <label>Type:</label>
+                            <select id="chartType" class="filter-select" onchange="updateChart()">
+                                <option value="bar">Bar Chart</option>
+                                <option value="line">Line Chart</option>
+                                <option value="pie">Pie Chart</option>
+                                <option value="doughnut">Doughnut Chart</option>
+                                <option value="radar">Radar Chart</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-group">
+                            <label>X-Axis:</label>
+                            <select id="xAxis" class="filter-select" onchange="updateChart()"></select>
+                        </div>
+
+                        <div class="filter-group">
+                            <label>Y-Axis:</label>
+                            <select id="yAxis" class="filter-select" onchange="updateChart()"></select>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-wrapper">
+                        <canvas id="dataChart"></canvas>
+                    </div>
+                </section>
+                
+            </main>
+        </div>
+    </div>
+
+    <!-- App Logic -->
+    <script src="app.js"></script>
+    <script>
+        // Simple active link styling logic for sidebar
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if(scrollY >= (sectionTop - 200)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if(link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

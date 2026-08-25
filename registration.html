@@ -1,0 +1,1172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Create Account — Data Analyzer</title>
+  <meta name="description" content="Create your Data Analyzer account and start transforming your data into actionable insights." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+  :root{
+    --primary:#4f46e5;
+    --primary-dark:#4338ca;
+    --primary-light:#6366f1;
+    --accent:#06b6d4;
+    --success:#10b981;
+    --danger:#ef4444;
+    --warning:#f59e0b;
+    --muted:#6b7280;
+    --muted-dark:#4b5563;
+    --bg:#f9fafb;
+    --card:#ffffff;
+    --border:#e5e7eb;
+    --text-primary:#0f172a;
+    --text-secondary:#475569;
+    --glass: rgba(255,255,255,0.12);
+  }
+  *{box-sizing:border-box}
+  html,body{
+    height:100%;
+    margin:0;
+    font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;
+    background:var(--bg);
+    color:var(--text-primary);
+    -webkit-font-smoothing:antialiased
+  }
+  
+  .page{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px 20px
+  }
+  
+  .container{
+    width:1200px;
+    max-width:100%;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:48px;
+    align-items:stretch
+  }
+
+  /* LEFT PANEL - Form */
+  .form-panel{
+    background:var(--card);
+    padding:48px 56px;
+    border-radius:20px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.08);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+
+  .brand-section{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:32px
+  }
+  .brand-icon{
+    width:40px;
+    height:40px;
+    background:linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px
+  }
+  .brand-name{
+    font-size:20px;
+    font-weight:700;
+    color:var(--text-primary)
+  }
+
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:var(--muted);
+    text-decoration:none;
+    font-size:14px;
+    margin-bottom:24px;
+    transition:color 0.2s
+  }
+  .back-link:hover{
+    color:var(--primary)
+  }
+
+  h1{
+    font-size:32px;
+    margin:0 0 12px;
+    font-weight:700;
+    color:var(--text-primary);
+    line-height:1.2
+  }
+  
+  .subtitle{
+    color:var(--muted);
+    margin:0 0 32px;
+    font-size:15px;
+    line-height:1.5
+  }
+
+  .form-field{
+    margin-bottom:20px
+  }
+
+  label{
+    display:block;
+    color:var(--text-primary);
+    font-size:14px;
+    margin-bottom:8px;
+    font-weight:600
+  }
+
+  .input-wrapper{
+    position:relative
+  }
+
+  .input{
+    width:100%;
+    padding:12px 44px 12px 14px;
+    border:1.5px solid var(--border);
+    border-radius:8px;
+    font-size:15px;
+    background:var(--card);
+    transition:all 0.2s ease;
+    font-family:inherit
+  }
+  .input:focus{
+    outline:none;
+    border-color:var(--primary);
+    box-shadow:0 0 0 3px rgba(79,70,229,0.1)
+  }
+  .input::placeholder{
+    color:#9ca3af
+  }
+
+  .input-icon{
+    position:absolute;
+    right:14px;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:16px;
+    opacity:0.6;
+    pointer-events:none
+  }
+
+  .toggle-password{
+    position:absolute;
+    right:14px;
+    top:50%;
+    transform:translateY(-50%);
+    background:none;
+    border:none;
+    cursor:pointer;
+    padding:4px;
+    color:var(--muted);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:color 0.2s;
+  }
+  .toggle-password:hover{
+    color:var(--primary);
+  }
+
+  .input-help{
+    font-size:13px;
+    color:var(--muted);
+    margin-top:6px;
+    line-height:1.4
+  }
+
+  .error-text{
+    color:var(--danger);
+    font-size:13px;
+    margin-top:6px;
+    display:none
+  }
+
+  /* Password Strength Meter */
+  .password-strength{
+    margin-top:12px
+  }
+  .strength-meter{
+    height:6px;
+    border-radius:10px;
+    background:#e5e7eb;
+    overflow:hidden;
+    margin-bottom:12px
+  }
+  .strength-bar{
+    height:100%;
+    width:0%;
+    transition:all 0.3s ease;
+    background:var(--muted)
+  }
+
+  .strength-requirements{
+    margin:0;
+    padding:0;
+    list-style:none
+  }
+  .strength-requirements li{
+    font-size:13px;
+    color:var(--muted);
+    margin:6px 0;
+    padding-left:20px;
+    position:relative
+  }
+  .strength-requirements li::before{
+    content:'○';
+    position:absolute;
+    left:0;
+    font-size:12px
+  }
+  .strength-requirements li.met{
+    color:var(--success);
+    font-weight:600
+  }
+  .strength-requirements li.met::before{
+    content:'✓'
+  }
+
+  .btn-primary{
+    width:100%;
+    padding:14px 24px;
+    border-radius:8px;
+    border:none;
+    background:linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color:#fff;
+    font-weight:600;
+    font-size:15px;
+    cursor:pointer;
+    transition:all 0.2s ease;
+    box-shadow:0 2px 8px rgba(79,70,229,0.2);
+    font-family:inherit;
+    margin-top:24px
+  }
+  .btn-primary:hover{
+    transform:translateY(-1px);
+    box-shadow:0 4px 12px rgba(79,70,229,0.3)
+  }
+  .btn-primary:active{
+    transform:translateY(0)
+  }
+  .btn-primary:disabled{
+    opacity:0.6;
+    cursor:not-allowed;
+    transform:none
+  }
+
+  .divider{
+    display:flex;
+    align-items:center;
+    margin:24px 0;
+    color:var(--muted);
+    font-size:13px
+  }
+  .divider::before,
+  .divider::after{
+    content:'';
+    flex:1;
+    height:1px;
+    background:var(--border)
+  }
+  .divider span{
+    padding:0 16px
+  }
+
+  .social-login{
+    display:flex;
+    gap:12px
+  }
+  .social-btn{
+    flex:1;
+    padding:12px;
+    border:1.5px solid var(--border);
+    border-radius:8px;
+    background:var(--card);
+    cursor:pointer;
+    font-size:14px;
+    font-weight:600;
+    transition:all 0.2s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px
+  }
+  .social-btn:hover{
+    border-color:var(--primary);
+    background:#f8f9fa
+  }
+
+  .login-prompt{
+    text-align:center;
+    margin-top:24px;
+    color:var(--text-secondary);
+    font-size:14px
+  }
+  .login-link{
+    color:var(--primary);
+    font-weight:600;
+    text-decoration:none;
+    margin-left:6px
+  }
+  .login-link:hover{
+    color:var(--primary-dark)
+  }
+
+  /* RIGHT PANEL - Hero */
+  .hero-panel{
+    background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius:20px;
+    padding:48px;
+    min-height:600px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    color:white;
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 20px 60px rgba(0,0,0,0.15)
+  }
+
+  .hero-content{
+    position:relative;
+    z-index:2
+  }
+
+  .hero-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(10px);
+    padding:8px 16px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:24px;
+    border:1px solid rgba(255,255,255,0.2)
+  }
+
+  .hero-title{
+    font-size:36px;
+    line-height:1.2;
+    font-weight:800;
+    margin:0 0 16px;
+    text-shadow:0 2px 20px rgba(0,0,0,0.1)
+  }
+
+  .hero-description{
+    font-size:16px;
+    line-height:1.6;
+    margin:0 0 32px;
+    opacity:0.95
+  }
+
+  .stats-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin-bottom:24px
+  }
+
+  .stat-card{
+    background:rgba(255,255,255,0.12);
+    backdrop-filter:blur(10px);
+    padding:20px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.15);
+    transition:all 0.3s ease
+  }
+  .stat-card:hover{
+    background:rgba(255,255,255,0.18);
+    transform:translateY(-2px)
+  }
+
+  .stat-number{
+    font-size:32px;
+    font-weight:800;
+    margin:0 0 4px
+  }
+
+  .stat-label{
+    font-size:13px;
+    opacity:0.9;
+    margin:0
+  }
+
+  .features-list{
+    list-style:none;
+    padding:0;
+    margin:32px 0 0
+  }
+
+  .feature-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:12px;
+    margin:8px 0;
+    background:rgba(255,255,255,0.08);
+    border-radius:8px;
+    backdrop-filter:blur(10px)
+  }
+
+  .feature-icon{
+    font-size:24px;
+    flex-shrink:0
+  }
+
+  .feature-text{
+    font-size:14px;
+    line-height:1.4;
+    margin:0
+  }
+
+  /* Background decorations */
+  .bg-circle-1{
+    position:absolute;
+    width:400px;
+    height:400px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.05);
+    top:-100px;
+    right:-100px;
+    z-index:1
+  }
+  .bg-circle-2{
+    position:absolute;
+    width:300px;
+    height:300px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.03);
+    bottom:-80px;
+    left:-80px;
+    z-index:1
+  }
+
+  /* OTP Section */
+  .otp-section{
+    margin-top:12px;
+    padding:16px;
+    background:rgba(79,70,229,0.05);
+    border:1.5px solid rgba(79,70,229,0.2);
+    border-radius:10px;
+    display:none;
+    animation:fadeIn 0.3s ease
+  }
+  .otp-section.show{
+    display:block
+  }
+  .otp-label{
+    font-size:13px;
+    color:var(--text-secondary);
+    margin:0 0 10px;
+    line-height:1.5
+  }
+  .otp-row{
+    display:flex;
+    gap:10px;
+    align-items:center
+  }
+  .otp-input{
+    flex:1;
+    padding:12px 14px;
+    border:1.5px solid var(--border);
+    border-radius:8px;
+    font-size:20px;
+    font-weight:700;
+    letter-spacing:8px;
+    text-align:center;
+    font-family:inherit;
+    background:var(--card);
+    transition:all 0.2s
+  }
+  .otp-input:focus{
+    outline:none;
+    border-color:var(--primary);
+    box-shadow:0 0 0 3px rgba(79,70,229,0.1)
+  }
+  .btn-send-otp{
+    padding:12px 16px;
+    border-radius:8px;
+    border:1.5px solid var(--primary);
+    background:transparent;
+    color:var(--primary);
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+    transition:all 0.2s;
+    white-space:nowrap;
+    font-family:inherit
+  }
+  .btn-send-otp:hover{
+    background:var(--primary);
+    color:#fff
+  }
+  .btn-send-otp:disabled{
+    opacity:0.5;
+    cursor:not-allowed
+  }
+  .btn-verify-otp{
+    padding:12px 20px;
+    border-radius:8px;
+    border:none;
+    background:linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color:#fff;
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+    transition:all 0.2s;
+    white-space:nowrap;
+    font-family:inherit
+  }
+  .btn-verify-otp:hover{
+    transform:translateY(-1px);
+    box-shadow:0 4px 12px rgba(79,70,229,0.3)
+  }
+  .btn-verify-otp:disabled{
+    opacity:0.5;
+    cursor:not-allowed;
+    transform:none
+  }
+  .verified-badge{
+    display:none;
+    align-items:center;
+    gap:6px;
+    color:var(--success);
+    font-weight:600;
+    font-size:14px;
+    margin-top:10px
+  }
+  .verified-badge.show{
+    display:flex
+  }
+  .email-row{
+    display:flex;
+    gap:10px;
+    align-items:center
+  }
+  .email-row .input{
+    flex:1
+  }
+
+  @keyframes fadeIn{
+    from{opacity:0;transform:translateY(-8px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+
+  /* Toast notification */
+  .toast{
+    position:fixed;
+    top:20px;
+    right:20px;
+    padding:16px 24px;
+    color:white;
+    border-radius:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+    font-weight:600;
+    z-index:1000;
+    animation:slideIn 0.3s ease
+  }
+  .toast.success{
+    background:linear-gradient(135deg, var(--success) 0%, #059669 100%)
+  }
+  .toast.error{
+    background:linear-gradient(135deg, var(--danger) 0%, #dc2626 100%)
+  }
+
+  @keyframes slideIn{
+    from{
+      transform:translateX(400px);
+      opacity:0
+    }
+    to{
+      transform:translateX(0);
+      opacity:1
+    }
+  }
+
+  /* Responsive */
+  @media (max-width:1100px){
+    .container{
+      grid-template-columns:1fr;
+      gap:32px
+    }
+    .hero-panel{
+      order:-1;
+      min-height:400px
+    }
+    .form-panel{
+      padding:32px 28px
+    }
+  }
+
+  @media (max-width:640px){
+    .page{
+      padding:20px 16px
+    }
+    .form-panel{
+      padding:28px 24px
+    }
+    h1{
+      font-size:26px
+    }
+    .hero-title{
+      font-size:28px
+    }
+    .stats-grid{
+      grid-template-columns:1fr
+    }
+    .social-login{
+      flex-direction:column
+    }
+  }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="container">
+      <!-- LEFT PANEL: Registration Form -->
+      <section class="form-panel" aria-labelledby="signup-heading">
+        <div class="brand-section">
+          <div class="brand-icon">📊</div>
+          <div class="brand-name">Data Analyzer</div>
+        </div>
+
+        <a href="login.html" class="back-link">
+          ← Back to login
+        </a>
+
+        <h1 id="signup-heading">Create Your Account</h1>
+        <p class="subtitle">Start analyzing your data with powerful tools and beautiful visualizations.</p>
+
+        <form id="signupForm" novalidate>
+          <div class="form-field">
+            <label for="name">Full Name</label>
+            <div class="input-wrapper">
+              <input 
+                id="name" 
+                class="input" 
+                name="name" 
+                type="text" 
+                placeholder="Enter your full name" 
+                autocomplete="name" 
+                required 
+              />
+              <span class="input-icon" aria-hidden="true">👤</span>
+            </div>
+            <p class="error-text" id="nameError"></p>
+          </div>
+
+          <div class="form-field">
+            <label for="email">Email Address</label>
+            <div class="email-row">
+              <div class="input-wrapper" style="flex:1">
+                <input 
+                  id="email" 
+                  class="input" 
+                  name="email" 
+                  type="email" 
+                  placeholder="your.email@company.com" 
+                  autocomplete="email" 
+                  required 
+                />
+                <span class="input-icon" aria-hidden="true">✉️</span>
+              </div>
+              <button type="button" class="btn-send-otp" id="sendOtpBtn">Send OTP</button>
+            </div>
+            <p class="error-text" id="emailError"></p>
+
+            <!-- OTP Box (shown after Send OTP) -->
+            <div class="otp-section" id="otpSection">
+              <p class="otp-label">📧 Enter the 6-digit code sent to your email:</p>
+              <div class="otp-row">
+                <input 
+                  type="text" 
+                  id="otpInput" 
+                  class="otp-input" 
+                  maxlength="6" 
+                  placeholder="------"
+                  inputmode="numeric"
+                />
+                <button type="button" class="btn-verify-otp" id="verifyOtpBtn">Verify</button>
+              </div>
+              <p class="error-text" id="otpError"></p>
+              <div class="verified-badge" id="verifiedBadge">
+                ✅ Email verified!
+              </div>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="password">Password</label>
+            <div class="input-wrapper">
+              <input 
+                id="password" 
+                class="input" 
+                name="password" 
+                type="password" 
+                placeholder="Create a strong password" 
+                autocomplete="new-password" 
+                required 
+                aria-describedby="pwHelp"
+              />
+              <button type="button" id="togglePW" class="toggle-password" aria-label="Show password">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              </button>
+            </div>
+            <p class="input-help" id="pwHelp">Use 8+ characters with uppercase, lowercase, and numbers or symbols.</p>
+
+            <div class="password-strength">
+              <div class="strength-meter">
+                <div class="strength-bar" id="strengthBar"></div>
+              </div>
+              <ul class="strength-requirements" id="requirements">
+                <li id="reqLength">At least 8 characters</li>
+                <li id="reqNumber">Contains number or symbol</li>
+                <li id="reqCase">Has uppercase & lowercase letters</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="retype">Confirm Password</label>
+            <div class="input-wrapper">
+              <input 
+                id="retype" 
+                class="input" 
+                name="retype" 
+                type="password" 
+                placeholder="Re-enter your password" 
+                autocomplete="new-password" 
+                required
+              />
+              <button type="button" id="toggleRetype" class="toggle-password" aria-label="Show confirm password">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              </button>
+            </div>
+            <p class="error-text" id="retypeError"></p>
+          </div>
+
+          <button class="btn-primary" id="signupBtn" type="submit">
+            Create Account
+          </button>
+        </form>
+
+        <div class="divider">
+          <span>Or sign up with</span>
+        </div>
+
+        <div class="social-login">
+          <button class="social-btn" type="button" aria-label="Sign up with Google">
+            <span>G</span>
+            <span>Google</span>
+          </button>
+          <button class="social-btn" type="button" aria-label="Sign up with Microsoft">
+            <span>M</span>
+            <span>Microsoft</span>
+          </button>
+        </div>
+
+        <p class="login-prompt">
+          Already have an account?
+          <a href="login.html" class="login-link">Sign in</a>
+        </p>
+      </section>
+
+      <!-- RIGHT PANEL: Hero Content -->
+      <aside class="hero-panel" aria-hidden="true">
+        <div class="bg-circle-1"></div>
+        <div class="bg-circle-2"></div>
+        
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span>🚀</span>
+            <span>Join Thousands of Analysts</span>
+          </div>
+
+          <h2 class="hero-title">
+            Start Your Data Journey Today
+          </h2>
+
+          <p class="hero-description">
+            Join professionals who trust Data Analyzer to transform raw data into actionable insights with powerful visualization and analysis tools.
+          </p>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <p class="stat-number">10K+</p>
+              <p class="stat-label">Active Users</p>
+            </div>
+            <div class="stat-card">
+              <p class="stat-number">50M+</p>
+              <p class="stat-label">Datasets Analyzed</p>
+            </div>
+            <div class="stat-card">
+              <p class="stat-number">99.9%</p>
+              <p class="stat-label">Uptime</p>
+            </div>
+            <div class="stat-card">
+              <p class="stat-number">24/7</p>
+              <p class="stat-label">Support</p>
+            </div>
+          </div>
+
+          <ul class="features-list">
+            <li class="feature-item">
+              <span class="feature-icon">🔒</span>
+              <p class="feature-text">Enterprise-grade security with encrypted data storage</p>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon">⚡</span>
+              <p class="feature-text">Lightning-fast processing for datasets of any size</p>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon">📱</span>
+              <p class="feature-text">Access from anywhere on any device</p>
+            </li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+ <script>
+  (function(){
+    const form = document.getElementById('signupForm');
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const pwInput = document.getElementById('password');
+    const retypeInput = document.getElementById('retype');
+    const togglePW = document.getElementById('togglePW');
+    const toggleRetype = document.getElementById('toggleRetype');
+    const signupBtn = document.getElementById('signupBtn');
+    const strengthBar = document.getElementById('strengthBar');
+    const reqLength = document.getElementById('reqLength');
+    const reqNumber = document.getElementById('reqNumber');
+    const reqCase = document.getElementById('reqCase');
+    const sendOtpBtn = document.getElementById('sendOtpBtn');
+    const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+    const otpSection = document.getElementById('otpSection');
+    const otpInput = document.getElementById('otpInput');
+    const otpError = document.getElementById('otpError');
+    const verifiedBadge = document.getElementById('verifiedBadge');
+
+    let emailVerified = false;
+
+    // ── OTP: Send ──
+    sendOtpBtn.addEventListener('click', async () => {
+      const email = emailInput.value.trim().toLowerCase();
+      if (!isValidEmail(email)) {
+        showError('emailError', 'Please enter a valid email address first');
+        emailInput.focus();
+        return;
+      }
+      document.getElementById('emailError').style.display = 'none';
+      sendOtpBtn.disabled = true;
+      sendOtpBtn.textContent = 'Sending...';
+
+      try {
+        const res = await fetch('http://127.0.0.1:5000/send-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          otpSection.classList.add('show');
+          showToast('OTP sent to ' + email, 'success');
+          // Resend countdown
+          let secs = 30;
+          const countdown = setInterval(() => {
+            sendOtpBtn.textContent = `Resend (${secs}s)`;
+            secs--;
+            if (secs < 0) {
+              clearInterval(countdown);
+              sendOtpBtn.disabled = false;
+              sendOtpBtn.textContent = 'Resend OTP';
+            }
+          }, 1000);
+        } else {
+          showError('emailError', data.error || 'Failed to send OTP');
+          sendOtpBtn.disabled = false;
+          sendOtpBtn.textContent = 'Send OTP';
+        }
+      } catch (e) {
+        showError('emailError', 'Server not reachable. Is Python running?');
+        sendOtpBtn.disabled = false;
+        sendOtpBtn.textContent = 'Send OTP';
+      }
+    });
+
+    // ── OTP: Verify ──
+    verifyOtpBtn.addEventListener('click', async () => {
+      const email = emailInput.value.trim().toLowerCase();
+      const otp = otpInput.value.trim();
+      if (otp.length !== 6) {
+        otpError.textContent = 'Please enter the 6-digit OTP';
+        otpError.style.display = 'block';
+        return;
+      }
+      otpError.style.display = 'none';
+      verifyOtpBtn.disabled = true;
+      verifyOtpBtn.textContent = 'Verifying...';
+
+      try {
+        const res = await fetch('http://127.0.0.1:5000/verify-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, otp })
+        });
+        const data = await res.json();
+        if (res.ok && data.verified) {
+          emailVerified = true;
+          otpSection.classList.remove('show');
+          otpSection.style.display = 'none';
+          emailInput.readOnly = true;
+          sendOtpBtn.style.display = 'none';
+          // Show a small verified text next to email
+          const badge = document.createElement('span');
+          badge.style.cssText = 'color:#10b981;font-weight:700;font-size:14px;margin-left:8px;display:inline-flex;align-items:center;gap:4px;';
+          badge.innerHTML = '✅ Verified';
+          emailInput.parentElement.parentElement.appendChild(badge);
+          showToast('Email verified! ✅', 'success');
+        } else {
+          otpError.textContent = data.error || 'Invalid OTP';
+          otpError.style.display = 'block';
+          verifyOtpBtn.disabled = false;
+          verifyOtpBtn.textContent = 'Verify';
+        }
+      } catch (e) {
+        otpError.textContent = 'Server not reachable.';
+        otpError.style.display = 'block';
+        verifyOtpBtn.disabled = false;
+        verifyOtpBtn.textContent = 'Verify';
+      }
+    });
+
+    const eyeOpen = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+    const eyeClosed = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`;
+
+    // Password visibility toggles
+    togglePW.addEventListener('click', () => {
+      const isPassword = pwInput.type === 'password';
+      pwInput.type = isPassword ? 'text' : 'password';
+      togglePW.innerHTML = isPassword ? eyeClosed : eyeOpen;
+      togglePW.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+    });
+
+    toggleRetype.addEventListener('click', () => {
+      const isPassword = retypeInput.type === 'password';
+      retypeInput.type = isPassword ? 'text' : 'password';
+      toggleRetype.innerHTML = isPassword ? eyeClosed : eyeOpen;
+      toggleRetype.setAttribute('aria-label', isPassword ? 'Hide confirm password' : 'Show confirm password');
+    });
+
+    // Password strength calculation
+    function calculateStrength(password) {
+      let strength = 0;
+      if (password.length >= 8) strength += 25;
+      if (/[0-9\W]/.test(password)) strength += 25;
+      if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength += 25;
+      if (password.length >= 12) strength += 25;
+      return strength;
+    }
+
+    // Update password strength UI
+    function updatePasswordStrength(password) {
+      const hasLength = password.length >= 8;
+      const hasNumber = /[0-9\W]/.test(password);
+      const hasCase = /[a-z]/.test(password) && /[A-Z]/.test(password);
+
+      // Update requirements
+      reqLength.classList.toggle('met', hasLength);
+      reqNumber.classList.toggle('met', hasNumber);
+      reqCase.classList.toggle('met', hasCase);
+
+      // Update strength bar
+      const strength = calculateStrength(password);
+      strengthBar.style.width = strength + '%';
+
+      if (strength <= 25) {
+        strengthBar.style.background = 'linear-gradient(90deg, #ef4444, #f97316)';
+      } else if (strength <= 50) {
+        strengthBar.style.background = 'linear-gradient(90deg, #f97316, #f59e0b)';
+      } else if (strength <= 75) {
+        strengthBar.style.background = 'linear-gradient(90deg, #f59e0b, #10b981)';
+      } else {
+        strengthBar.style.background = 'linear-gradient(90deg, #10b981, #06b6d4)';
+      }
+    }
+
+    pwInput.addEventListener('input', (e) => {
+      updatePasswordStrength(e.target.value);
+    });
+
+    // Email validation
+    function isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    // Show toast notification
+    function showToast(message, type = 'success') {
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.textContent = message;
+      document.body.appendChild(toast);
+
+      setTimeout(() => {
+        toast.remove();
+      }, 3000);
+    }
+
+    // Clear error messages
+    function clearErrors() {
+      document.getElementById('nameError').style.display = 'none';
+      document.getElementById('emailError').style.display = 'none';
+      document.getElementById('retypeError').style.display = 'none';
+    }
+
+    // Show error message
+    function showError(elementId, message) {
+      const errorEl = document.getElementById(elementId);
+      errorEl.textContent = message;
+      errorEl.style.display = 'block';
+    }
+
+    // Form validation and submission
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearErrors();
+
+      const name = nameInput.value.trim();
+      const email = emailInput.value.trim().toLowerCase();
+      const password = pwInput.value;
+      const retype = retypeInput.value;
+
+      // Validate name
+      if (!name) {
+        showError('nameError', 'Please enter your full name');
+        nameInput.focus();
+        return;
+      }
+
+      // Validate email
+      if (!email) {
+        showError('emailError', 'Please enter your email address');
+        emailInput.focus();
+        return;
+      }
+
+      if (!isValidEmail(email)) {
+        showError('emailError', 'Please enter a valid email address');
+        emailInput.focus();
+        return;
+      }
+
+      // Validate password
+      if (password.length < 8) {
+        showError('retypeError', 'Password must be at least 8 characters');
+        pwInput.focus();
+        return;
+      }
+
+      if (!/[0-9\W]/.test(password)) {
+        showError('retypeError', 'Password must contain at least one number or symbol');
+        pwInput.focus();
+        return;
+      }
+
+      if (!/[a-z]/.test(password) || !/[A-Z]/.test(password)) {
+        showError('retypeError', 'Password must contain both uppercase and lowercase letters');
+        pwInput.focus();
+        return;
+      }
+
+      // Validate password confirmation
+      if (password !== retype) {
+        showError('retypeError', 'Passwords do not match');
+        retypeInput.focus();
+        return;
+      }
+
+      // Check email is verified
+      if (!emailVerified) {
+        showError('emailError', 'Please verify your email with OTP before creating account');
+        emailInput.focus();
+        return;
+      }
+
+      // Show loading state
+      signupBtn.disabled = true;
+      signupBtn.textContent = 'Creating Account...';
+
+      try {
+        // ---------------------------------------------------------
+        // NEW BACKEND CONNECTION LOGIC
+        // We are sending the 'email' as the 'username' to match 
+        // the Python server structure we built earlier.
+        // ---------------------------------------------------------
+        const response = await fetch('http://127.0.0.1:5000/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: email, // Treating email as the unique identifier
+                password: password
+            })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            // Save user info so the dashboard can display it
+            localStorage.setItem('userFullName', name);
+            localStorage.setItem('userEmail', email);
+
+            // Show success message
+            showToast('Account created successfully! Redirecting...');
+
+            // Clear form
+            form.reset();
+            updatePasswordStrength('');
+
+            // Redirect to login
+            setTimeout(() => {
+              window.location.href = 'login.html';
+            }, 1500);
+        } else {
+            // Handle backend errors (e.g., email already exists)
+            showError('emailError', result.error || 'Registration failed');
+            signupBtn.disabled = false;
+            signupBtn.textContent = 'Create Account';
+        }
+
+      } catch (error) {
+        console.error('Registration error:', error);
+        showError('retypeError', 'Could not connect to the server. Is Python running?');
+        signupBtn.disabled = false;
+        signupBtn.textContent = 'Create Account';
+      }
+    });
+
+    // Social login handlers (placeholder)
+    document.querySelectorAll('.social-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        showToast('Social login coming soon!');
+      });
+    });
+  })();
+</script>
+</body>
+</html>

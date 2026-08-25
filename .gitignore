@@ -1,0 +1,19 @@
+# Environment files
+.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.venv/
+env/
+venv/
+
+# Scratch/temporary files
+scratch/
