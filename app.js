@@ -11,7 +11,8 @@ let serverChartData = null;
 let numericColumns = [];
 let categoricalColumns = [];
 
-const API_BASE = 'http://127.0.0.1:5000';
+const isLocalDevelopment = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+const API_BASE = isLocalDevelopment ? 'http://127.0.0.1:5000' : window.location.origin;
 
 // Initialize
 document.addEventListener('DOMContentLoaded', function () {
